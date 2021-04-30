@@ -1,3 +1,49 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext } from "react";
 
-const AppContect = React.createContext();
+const AppContext = React.createContext();
+
+//will wrap the App in the AppProvider
+//{children} to be able to see the components
+const AppProvider = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openSidebar = () => {
+    setIsSidebarOpen(true);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <AppContext.Provider
+      value={{
+        isModalOpen,
+        isSidebarOpen,
+        openModal,
+        openSidebar,
+        closeModal,
+        closeSidebar,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+//custom hook
+//has to start with "use"
+export const useGlobalContext = () => {
+  return useContext(AppContext);
+};
+
+export { AppContext, AppProvider };
